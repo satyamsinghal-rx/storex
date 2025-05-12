@@ -36,7 +36,7 @@ export async function deleteAsset(
         .returning();
 
     return NextResponse.json(
-      {asset: result,  message: "Asset deleted successfully" },
+      {asset: result,  message: "Asset deleted successfully" },   
       { status: 200 }
     );
   } catch (error) {

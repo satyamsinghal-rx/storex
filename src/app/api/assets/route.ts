@@ -95,6 +95,7 @@ export async function GET() {
         warrantyStartDate: assets.warrantyStartDate,
         warrantyExpiryDate: assets.warrantyExpiryDate,
         isAvailable: assets.isAvailable,
+        assignedTo: assets.assignedTo,
         ownedBy: assets.ownedBy,
         clientName: assets.clientName,
         assetPic: assets.assetPic,
@@ -106,6 +107,7 @@ export async function GET() {
     if (!assetsList.length) {
       return NextResponse.json([], { status: 200 });
     }
+    
 
     const assetsByType = assetsList.reduce<Record<AssetType, string[]>>((acc, asset) => {
       (acc[asset.type] || []).push(asset.id);

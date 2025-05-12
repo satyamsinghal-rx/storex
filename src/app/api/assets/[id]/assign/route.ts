@@ -50,6 +50,7 @@ export async function POST(
     const [existingEmployee] = await db
       .select({
         id: employees.id,
+        name: employees.name
       })
       .from(employees)
       .where(
@@ -74,6 +75,7 @@ export async function POST(
           isAvailable: false,
           status: "assigned",
           updatedAt: new Date(),
+          assignedTo: existingEmployee.name
         })
         .where(eq(assets.id, params.id))
         .returning();

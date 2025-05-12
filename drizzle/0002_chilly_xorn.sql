@@ -1,0 +1,1 @@
+ALTER TABLE "assets" ADD COLUMN "assigned_to" text;

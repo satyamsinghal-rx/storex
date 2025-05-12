@@ -15,6 +15,13 @@
       "when": 1746459882926,
       "tag": "0001_tiny_vector",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1747042216530,
+      "tag": "0002_chilly_xorn",
+      "breakpoints": true
     }
   ]
 }

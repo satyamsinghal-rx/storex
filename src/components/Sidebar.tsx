@@ -12,7 +12,7 @@ const Sidebar = () => {
 
   const navItems = [
     { text: "Dashboard", icon: <DashboardIcon />, href: "/dashboard" },
-    { text: "Assets", icon: <InventoryIcon />, href: "/assets" },
+    { text: "Assets", icon: <InventoryIcon />, href: "/dashboard/assets" },
     { text: "Employee", icon: <PeopleIcon />, href: "/employee" },
     { text: "Settings", icon: <SettingsIcon />, href: "/settings" },
   ];

@@ -148,6 +148,7 @@ export const assets = pgTable("assets", {
   warrantyStartDate: timestamp("warranty_start_date"),
   warrantyExpiryDate: timestamp("warranty_expiry_date"),
   isAvailable: boolean("is_available").default(true).notNull(),
+  assignedTo: text("assigned_to"),
   ownedBy: text("owned_by"),
   clientName: text("client_name"),
   assetPic: text("asset_pic"),

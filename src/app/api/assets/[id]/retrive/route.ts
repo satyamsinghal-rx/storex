@@ -22,6 +22,7 @@ export async function PATCH(
           updatedAt: new Date(),
           isAvailable: true,
           status: "available",
+          assignedTo: null,
         })
         .where(eq(assets.id, params.id))
         .returning();

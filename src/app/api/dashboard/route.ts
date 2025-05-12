@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { assets } from "@/db/schema";
 import { auth } from "@/lib/auth";
@@ -13,7 +13,6 @@ type AssetType =
   | "accessories"
   | "ram"
   | "hardisk";
-type DashboardTab = "total" | "assigned" | "available";
 
 const assetTypes: AssetType[] = [
   "laptop",
@@ -26,7 +25,7 @@ const assetTypes: AssetType[] = [
   "hardisk",
 ];
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const session = await auth();
   if (!session || !session.user) {
     return NextResponse.json(
@@ -36,16 +35,6 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const url = new URL(request.url);
-    const tab = (url.searchParams.get("tab") || "total") as DashboardTab;
-
-    if (!["total", "assigned", "available"].includes(tab)) {
-      return NextResponse.json(
-        { error: "Invalid tab value. Use 'total', 'assigned', or 'available'" },
-        { status: 400 }
-      );
-    }
-
     const allAssets = await db
       .select({
         type: assets.type,
@@ -86,23 +75,20 @@ export async function GET(request: NextRequest) {
       0
     );
 
-    let response;
-    if (tab === "total") {
-      response = {
-        total: totalCount,
+    const response = {
+      total: {
+        count: totalCount,
         byType: byTypeTotal,
-      };
-    } else if (tab === "assigned") {
-      response = {
-        assigned: assignedCount,
+      },
+      assigned: {
+        count: assignedCount,
         byType: byTypeAssigned,
-      };
-    } else {
-      response = {
-        available: availableCount,
+      },
+      available: {
+        count: availableCount,
         byType: byTypeAvailable,
-      };
-    }
+      },
+    };
 
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
