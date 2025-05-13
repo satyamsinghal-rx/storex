@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   TextField,
@@ -9,17 +9,15 @@ import {
   MenuItem,
   SelectChangeEvent,
   Button,
-  Chip,
   Breadcrumbs,
   Typography,
-  Autocomplete,
-  Checkbox,
+
 } from "@mui/material";
 import { Search, FilterList } from "@mui/icons-material";
 import Link from "next/link";
 import { NavigateNext } from "@mui/icons-material";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import AddAssetDrawer from "./AddAssetDrawer";
+import TypeFilterSelect from "./TypeFilter";
 
 interface AssetsHeaderProps {
   searchQuery: string;
@@ -42,12 +40,15 @@ export default function AssetsHeader({
   assetTypes,
   statuses,
 }: AssetsHeaderProps) {
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-//   const handleTypeChange = (e: SelectChangeEvent) => {
-//     setTypeFilter(e.target.value);
-//   };
+  const handleDrawerOpen = () => {
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
 
   const handleStatusChange = (e: SelectChangeEvent) => {
     setStatusFilter(e.target.value);
@@ -74,7 +75,7 @@ export default function AssetsHeader({
           size="small"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ width: 300 }}
+          sx={{ width: 500 }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -84,45 +85,11 @@ export default function AssetsHeader({
           }}
         />
 
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Autocomplete
-            multiple
-            disableCloseOnSelect
-            options={assetTypes}
-            value={typeFilter}
-            onChange={(_, newValue) => {
-
-              setTypeFilter(newValue);
-            }}
-            getOptionLabel={(option) => option}
-            renderOption={(props, option, { selected }) => {
-                const { key, ...rest } = props;
-                return (
-                  <li key={key} {...rest}>
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option}
-              </li>
-            )}}
-            style={{ width: 200 }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Type"
-                size="small"
-                placeholder="Type"
-              />
-            )}
-          />
-          {typeFilter && (
-            <Chip label={typeFilter} size="small" variant="outlined" />
-          )}
-        </Box>
-
+        <TypeFilterSelect
+          typeFilter={typeFilter}
+          setTypeFilter={setTypeFilter}
+          assetTypes={assetTypes}
+        />
         <FormControl size="small" sx={{ minWidth: 120 }}>
           <InputLabel id="status-filter-label">Status</InputLabel>
           <Select
@@ -146,9 +113,16 @@ export default function AssetsHeader({
 
         <Box sx={{ flexGrow: 1 }} />
 
-        <Button variant="contained" color="primary" startIcon={<span>+</span>}>
+        <Button
+          onClick={handleDrawerOpen}
+          variant="contained"
+          sx={{ backgroundColor: "black" }}
+          startIcon={<span>+</span>}
+        >
           Add Asset
         </Button>
+
+        <AddAssetDrawer open={drawerOpen} onClose={handleDrawerClose} />
       </Box>
     </Box>
   );

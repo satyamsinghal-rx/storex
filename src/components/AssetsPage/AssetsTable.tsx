@@ -10,14 +10,13 @@ import {
   IconButton,
   Chip,
   Box,
-  Drawer,
-  Typography,
-  Divider,
 } from "@mui/material";
 import { Edit, Info, MoreVert } from "@mui/icons-material";
+import AssetDetailsDrawer from "@/components/AssetsPage/AssetsDetailDrawer";
+import EditAssetDrawer from "./EditAssetDrawer";
 
 interface Asset {
-  id: number;
+  id: string;
   brand: string;
   model: string;
   serialNo: string;
@@ -54,16 +53,24 @@ export default function AssetsTable({
   rowsPerPage,
   onMenuOpen,
 }: AssetsTableProps) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [detailsDrawerOpen, setDetailsDrawerOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
+  const [editDrawerOpen, setEditDrawerOpen] = useState(false);
 
-  const handleDrawerOpen = (asset: Asset) => {
+
+  const handleDetailsDrawerOpen = (asset: Asset) => {
     setSelectedAsset(asset);
-    setDrawerOpen(true);
+    setDetailsDrawerOpen(true);
+  };
+
+  const handleEditDrawerOpen = (asset: Asset) => {
+    setSelectedAsset(asset);
+    setEditDrawerOpen(true);
   };
 
   const handleDrawerClose = () => {
-    setDrawerOpen(false);
+    setDetailsDrawerOpen(false);
+    setEditDrawerOpen(false);
     setSelectedAsset(null);
   };
 
@@ -104,18 +111,18 @@ export default function AssetsTable({
                   <TableCell>{asset.purchaseDate}</TableCell>
                   <TableCell>
                     <Box sx={{ display: "flex" }}>
-                      <IconButton size="small">
+                      <IconButton size="small" onClick={() => handleEditDrawerOpen(asset)}>
                         <Edit fontSize="small" />
                       </IconButton>
                       <IconButton
                         size="small"
-                        onClick={() => handleDrawerOpen(asset)}
+                        onClick={() => handleDetailsDrawerOpen(asset)}
                       >
                         <Info fontSize="small" />
                       </IconButton>
                       <IconButton
                         size="small"
-                        onClick={(e) => onMenuOpen(e, asset.id)}
+                        onClick={(e) => onMenuOpen(e, Number(asset.id))}
                       >
                         <MoreVert fontSize="small" />
                       </IconButton>
@@ -127,38 +134,16 @@ export default function AssetsTable({
         </Table>
       </TableContainer>
 
-      <Drawer
-        anchor="right"
-        open={drawerOpen}
+      <AssetDetailsDrawer
+        open={detailsDrawerOpen}
         onClose={handleDrawerClose}
-        sx={{ width: 350, flexShrink: 0 }}
-      >
-        <Box
-          sx={{
-            width: 350,
-            padding: 2,
-            overflowY: "auto",
-          }}
-        >
-          {selectedAsset && (
-            <>
-              <Typography variant="h6" gutterBottom>
-                Asset Details
-              </Typography>
-              <Divider />
-              <Box sx={{ marginTop: 2 }}>
-                <Typography variant="body1"><strong>Brand:</strong> {selectedAsset.brand}</Typography>
-                <Typography variant="body1"><strong>Model:</strong> {selectedAsset.model}</Typography>
-                <Typography variant="body1"><strong>Serial No.:</strong> {selectedAsset.serialNo}</Typography>
-                <Typography variant="body1"><strong>Asset Type:</strong> {selectedAsset.type}</Typography>
-                <Typography variant="body1"><strong>Status:</strong> {selectedAsset.status}</Typography>
-                <Typography variant="body1"><strong>Assigned To:</strong> {selectedAsset.assignedTo || "None"}</Typography>
-                <Typography variant="body1"><strong>Purchase Date:</strong> {selectedAsset.purchaseDate}</Typography>
-              </Box>
-            </>
-          )}
-        </Box>
-      </Drawer>
+        selectedAsset={selectedAsset}
+      />
+      <EditAssetDrawer
+        open={editDrawerOpen}
+        onClose={handleDrawerClose}
+        assetDetails={selectedAsset}
+      />
     </>
   );
 }

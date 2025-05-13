@@ -40,3 +40,15 @@ export type TimelineEvent =
       };
       timestamp: Date;
     };
+
+export interface Asset {
+  id: string;
+  brand: string;
+  model: string;
+  serialNo: string;
+  assetType: string;
+  status: "Available" | "Assigned" | "Service";
+  assignedTo: string | null;
+  purchaseDate: string;
+  type: string;
+}

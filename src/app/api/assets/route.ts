@@ -178,7 +178,6 @@ export async function POST(request: Request) {
       ? new Date(warrantyExpiryDate)
       : null;
 
-    // Validate that dates are valid
     if (
       isNaN(parsedPurchaseDate.getTime()) ||
       (warrantyStartDate && isNaN(parsedWarrantyStartDate?.getTime() ?? NaN)) ||

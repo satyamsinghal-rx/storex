@@ -39,3 +39,23 @@ export const getAssets = async () => {
     throw new Error("Could not fetch dashboard data");
   }
 };
+
+export const addAsset = async (data: unknown) => {
+  try {
+    const response = await axios.post(`${API_URL}/assets`, data );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    throw new Error("Could not fetch dashboard data");
+  }
+};
+
+export const editAsset = async (id: string, data: unknown) => {
+  try{
+    const response = await axios.patch(`${API_URL}/assets/${id}`, data)
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    throw new Error("Could not fetch dashboard data");
+  }
+}

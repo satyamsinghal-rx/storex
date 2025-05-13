@@ -2,16 +2,13 @@ import React from "react";
 import {
   Menu,
   MenuItem,
-  ListItemIcon,
   ListItemText,
   Divider,
 } from "@mui/material";
-import { Edit, Info, Delete } from "@mui/icons-material";
 
 interface AssetActionsMenuProps {
   anchorEl: null | HTMLElement;
   onClose: () => void;
-  onEdit: () => void;
   onViewDetails: () => void;
   onDelete: () => void;
 }
@@ -19,7 +16,6 @@ interface AssetActionsMenuProps {
 export default function AssetActionsMenu({
   anchorEl,
   onClose,
-  onEdit,
   onViewDetails,
   onDelete,
 }: AssetActionsMenuProps) {
@@ -29,14 +25,11 @@ export default function AssetActionsMenu({
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
       <MenuItem
         onClick={() => {
-          onEdit();
           onClose();
         }}
       >
-        <ListItemIcon>
-          <Edit fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Edit</ListItemText>
+
+        <ListItemText>Assign</ListItemText>
       </MenuItem>
       <MenuItem
         onClick={() => {
@@ -44,10 +37,8 @@ export default function AssetActionsMenu({
           onClose();
         }}
       >
-        <ListItemIcon>
-          <Info fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>View Details</ListItemText>
+
+        <ListItemText>Sent to Service</ListItemText>
       </MenuItem>
       <Divider />
       <MenuItem
@@ -55,11 +46,8 @@ export default function AssetActionsMenu({
           onDelete();
           onClose();
         }}
-        sx={{ color: "error.main" }}
       >
-        <ListItemIcon sx={{ color: "error.main" }}>
-          <Delete fontSize="small" />
-        </ListItemIcon>
+
         <ListItemText>Delete</ListItemText>
       </MenuItem>
     </Menu>
